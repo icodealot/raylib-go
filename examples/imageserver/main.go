@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"fmt"
 	"image/png"
 	"log"
 	"net/http"
@@ -53,10 +52,10 @@ func main() {
 	signal.Notify(osChan, os.Interrupt, syscall.SIGTERM, syscall.SIGABRT)
 
 	go func() {
-		fmt.Printf("Server started\n")
+		log.Printf("Server started\n")
 		err := http.ListenAndServe(":8080", nil)
 		if err != nil && err != http.ErrServerClosed {
-			fmt.Printf("server error: %v", err)
+			log.Printf("server error: %v\n", err)
 		}
 	}()
 
