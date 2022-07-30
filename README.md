@@ -6,9 +6,13 @@
 
 My goal with this library is to be able to do headless rendering in Docker containers using raylib bindings for Golang. The bindings themselves are heavily based on the excellent work of [raylib-go](https://github.com/gen2brain/raylib-go)
 
-There is nothing stopping you from trying to use this outside of a Docker container, with a Linux server or distro of your choice, but the examples and documentation here will be geared towards the former. 
+There is nothing stopping you from trying to use this outside of a Docker container, with a Linux server or distro of your choice, but the examples here will be geared towards the former. On Ubuntu for example you might need to add some libraries such as:
 
-### Requirements
+```
+sudo apt-get update -y; sudo apt-get -y install libgl1-mesa-dev libosmesa6-dev
+```
+
+### Docker Requirements
 
 ##### Docker with golang + osmesa
 
@@ -32,7 +36,7 @@ There is nothing stopping you from trying to use this outside of a Docker contai
 	ENTRYPOINT yourservice
 
 
-### Installation
+### Module Installation
 
     go get -v -u github.com/icodealot/raylib-go-headless/raylib
 
@@ -41,6 +45,46 @@ There is nothing stopping you from trying to use this outside of a Docker contai
 Documentation on [GoDoc](https://godoc.org/github.com/icodealot/raylib-go-headless/raylib). Also check raylib [cheatsheet](http://www.raylib.com/cheatsheet/cheatsheet.html).
 
 ### Example
+
+There is an example of rendering images from raylib and sending them as image/png payloads to HTTP reqeusts.
+
+You will need:
+
+- The docker daemon running
+- Access to run ```docker build``` and ```docker run```
+- cURL or A web browser to test
+
+Clone the Git repo:
+```
+git clone https://github.com/icodealot/raylib-go-headless
+```
+
+```
+cd raylib-go-headless/examples/imageserver
+```
+
+Build and run the docker container:
+```
+docker build -t imageserver-example .
+```
+
+```
+docker run -dp 8080:8080 imageserver-example:latest
+```
+
+Open a web browser to http://localhost:8080/
+
+or
+
+```
+curl -o example.png http://localhost:8080/
+```
+
+If all goes well you should see something similar to this image.
+
+![example](./examples/imageserver/example.png)
+
+### Example source
 
 ```go
 package main
