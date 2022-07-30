@@ -11,8 +11,8 @@ import (
 	"unsafe"
 )
 
-func InitRaylib(width int32, height int32) {
-	initWindow(width, height, "raylib-go-headless")
+func InitRaylib() {
+	initWindow(0, 0, "raylib-go-headless")
 }
 
 // CloseRaylib - Close headless window and terminate graphics context
