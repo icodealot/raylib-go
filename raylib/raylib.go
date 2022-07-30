@@ -14,7 +14,7 @@ Example:
 	import "github.com/icodealot/raylib-go-headless/raylib"
 
 	func main() {
-		rl.InitRaylib(800, 450)
+		rl.InitRaylib()
 
 		rl.SetTargetFPS(60)
 
