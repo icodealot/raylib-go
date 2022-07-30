@@ -9,6 +9,7 @@ RUN apk add \
 
 WORKDIR /api
 COPY . .
+RUN go get -u -v github.com/icodealot/raylib-go-headless@master
 RUN go mod tidy
 
 RUN go build -o /api/raylibserver
