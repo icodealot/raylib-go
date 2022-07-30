@@ -2,10 +2,13 @@ package main
 
 import (
 	"bytes"
-	"fmt"
 	"image/png"
+	"log"
 	"net/http"
+	"os"
+	"os/signal"
 	"strconv"
+	"syscall"
 
 	rl "github.com/icodealot/raylib-go-headless/raylib"
 )
@@ -45,13 +48,21 @@ func main() {
 		}
 	})
 
-	fmt.Printf("Starting server")
-	err := http.ListenAndServe(":8080", nil)
-	if err != nil {
-		return
-	}
+	osChan := make(chan os.Signal, 1)
+	signal.Notify(osChan, os.Interrupt, syscall.SIGTERM, syscall.SIGABRT)
 
-	defer rl.UnloadRenderTexture(render)
-	defer rl.UnloadImage(image)
-	defer rl.CloseRaylib()
+	go func() {
+		log.Printf("Server started\n")
+		err := http.ListenAndServe(":8080", nil)
+		if err != nil && err != http.ErrServerClosed {
+			log.Printf("server error: %v\n", err)
+		}
+	}()
+
+	interrupt := <-osChan
+	log.Printf("\n\nshutting down server...%v\n", interrupt)
+
+	rl.UnloadRenderTexture(render)
+	rl.UnloadImage(image)
+	rl.CloseRaylib()
 }
